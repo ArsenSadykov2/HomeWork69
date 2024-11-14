@@ -1,37 +1,35 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axiosApi from "../../axoisApi.ts";
 
 interface Task {
     id: number;
-    title: string;
-    description: string;
+    name: string;
+    summary: string;
+    language: string;
+    status: string;
 }
 
 interface CounterState {
-    value: Task[];
-    info: null | string;
+    value: { show: Task }[];
+    info: Task | null;
     isLoading: boolean;
-    error: boolean;
+    error: string | null;
 }
 
 const initialState: CounterState = {
     value: [],
     info: null,
     isLoading: false,
-    error: false,
+    error: null,
 }
 
-export const serialsInfo = createAsyncThunk(
-    'serials/serialsInfo',
-    async (query) => {
+export const serialsInfo =  createAsyncThunk('serials/serialsInfo', async (query) => {
         const response = await axiosApi.get(`${query}`);
         return response.data;
     }
 );
 
-export const fetchSerialsInfos = createAsyncThunk(
-    'serials/fetchSerialsInfos',
-    async (query) => {
+export const fetchSerialsInfos = createAsyncThunk('serials/fetchSerialsInfos', async (query) => {
         const response = await axiosApi.get(`${query}`);
         return response.data;
     }
@@ -45,7 +43,7 @@ export const serialsSlice = createSlice({
             .addCase(serialsInfo.pending, (state) => {
                 state.isLoading = true;
             })
-            .addCase(serialsInfo.fulfilled, (state, action: PayloadAction<Task[]>) => {
+            .addCase(serialsInfo.fulfilled, (state, action) => {
                 state.value = action.payload;
                 state.isLoading = false;
             })
@@ -66,6 +64,7 @@ export const serialsSlice = createSlice({
 });
 
 export const serialsReducer = serialsSlice.reducer;
+
 
 
 
