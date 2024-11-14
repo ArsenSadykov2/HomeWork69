@@ -1,7 +1,8 @@
 import {configureStore} from "@reduxjs/toolkit";
+import {serialsReducer} from "../containers/Counter/CounterSlice.ts";
 
 export const store = configureStore({
-    reducer: {}
+    reducer: serialsReducer,
 });
 
 export type RootState = ReturnType<typeof store.getState>;
